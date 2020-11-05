@@ -1,4 +1,5 @@
 const prompts = require("prompts");
+const sequence = require('../providers/charSequence')
 
 module.exports.name = 'arithmetic sequence'
 module.exports.description = '字符间等差数列'
@@ -11,14 +12,13 @@ module.exports.find = async (matched) => {
     },
   ]);
 
-  if (sequencedChars !== "") {
+  if (sequencedChars) {
     const newMatch = sequencedChars.split(" ");
 
     matched = matched.filter((word) => {
       const exploded = word.split("");
       return newMatch.every((match) => {
         const indexes = match.split(",");
-        const sequence = "abcdefghijklmnopqrstuvwxyz".split("");
         
         let last
 

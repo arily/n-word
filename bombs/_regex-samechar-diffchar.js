@@ -15,8 +15,8 @@ const pattern2Regex = (pattern) => {
   return new RegExp(pattern.join("") + "$");
 };
 
-module.exports.name = 'regex-samechar-diffchar'
-module.exports.description = 'regex匹配pattern，过滤同字符，过滤不同字符'
+module.exports.name = "regex-samechar-diffchar";
+module.exports.description = "regex匹配pattern，过滤同字符，过滤不同字符";
 module.exports.find = async (words) => {
   const { patternStr, sameChar, diffChar } = await prompts([
     {
@@ -35,17 +35,22 @@ module.exports.find = async (words) => {
       message: 'Different Chars? split pair with " ", split number with ","',
     },
   ]);
-  const pattern = pattern2Regex(patternStr);
-  console.log(pattern);
-  let matched = words
-    .reduce((acc, cur) => {
-      if (cur.match(pattern)) acc.push(cur);
-      return acc;
-    }, [])
-    .filter((matched) => matched.length === patternStr.length)
-    .map((matched) => matched.toLowerCase());
 
-  if (sameChar !== "") {
+  let matched = words
+
+  if (patternStr) {
+    const pattern = pattern2Regex(patternStr);
+    console.log(pattern);
+    matched
+      .reduce((acc, cur) => {
+        if (cur.match(pattern)) acc.push(cur);
+        return acc;
+      }, [])
+      .filter((matched) => matched.length === patternStr.length)
+      .map((matched) => matched.toLowerCase());
+  }
+
+  if (sameChar) {
     const sameCharPair = sameChar.split(" ");
     matched = matched
       .map((word) => {
@@ -65,7 +70,7 @@ module.exports.find = async (words) => {
       .filter((w) => w);
   }
 
-  if (diffChar !== "") {
+  if (diffChar) {
     const sameCharPair = diffChar.split(" ");
     matched = matched
       .map((word) => {
@@ -85,5 +90,5 @@ module.exports.find = async (words) => {
       .filter((w) => w);
   }
 
-  return matched
-}
+  return matched;
+};

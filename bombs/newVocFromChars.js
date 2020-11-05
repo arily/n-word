@@ -13,7 +13,7 @@ module.exports.find = async (matched) => {
     }
   ]);
 
-  if (newVocFromChars !== "") {
+  if (newVocFromChars) {
     const newMatch = newVocFromChars.split(" ");
 
     matched = matched.filter((word) => {

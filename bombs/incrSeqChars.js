@@ -1,4 +1,5 @@
 const prompts = require("prompts");
+const sequence = require('../providers/charSequence')
 
 module.exports.name = 'increment-sequenced-chars'
 module.exports.description = '连续字符'
@@ -11,14 +12,14 @@ module.exports.find = async (matched) => {
     },
   ]);
 
-  if (sequencedChars !== "") {
+  if (sequencedChars) {
     const newMatch = sequencedChars.split(" ");
 
     matched = matched.filter((word) => {
       const exploded = word.split("");
       return newMatch.every((match) => {
         const indexes = match.split(",");
-        const sequence = "abcdefghijklmnopqrstuvwxyz".split("");
+
         return indexes.every((charIndex, index, arr) => {
           if (index === 0) return true;
           const nowIndex = sequence.findIndex(

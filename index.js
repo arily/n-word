@@ -44,6 +44,8 @@ const filterJapanese = (words) =>
         },
       ]);
 
+      if (!plugin) process.exit()
+
       result = await plugin.find(result);
 
       console.log("current result", filterJapanese(result));
