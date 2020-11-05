@@ -1,4 +1,4 @@
-const sequence = "abcdefghijklmnopqrstuvwxyz".split("");
+const sequence = 'abcdefghijklmnopqrstuvwxyz'.split('')
 sequence.unshift('')
 
 module.exports = sequence

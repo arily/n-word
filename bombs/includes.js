@@ -7,7 +7,8 @@ module.exports.find = async (words) => {
     {
       type: 'text',
       name: 'charsSet',
-      message: 'included chars? split pair with " "'
+      message: 'included chars? split pair with " "',
+      validate: (value) => value === '' ? 'type someting..' : true
     },
     {
       type: (prev) => prev.split(' ').length > 1 ? 'select' : null,
@@ -24,7 +25,6 @@ module.exports.find = async (words) => {
 
   const charsArray = charsSet.split(' ')
   return words.filter(word => {
-    // console.log(mode)
     return charsArray[mode || 'some']((chars) => {
       return word.includes(chars)
     })
