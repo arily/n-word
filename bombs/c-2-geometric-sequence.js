@@ -1,7 +1,7 @@
 const prompts = require("prompts");
 
-module.exports.name = 'arithmetic sequence'
-module.exports.description = '字符间等差数列'
+module.exports.name = 'geometric sequence'
+module.exports.description = '字符间等比数列'
 module.exports.find = async (matched) => {
   const { sequencedChars } = await prompts([
     {
@@ -19,6 +19,7 @@ module.exports.find = async (matched) => {
       return newMatch.every((match) => {
         const indexes = match.split(",");
         const sequence = "abcdefghijklmnopqrstuvwxyz".split("");
+        sequence.unshift('')
         
         let last
 
@@ -32,11 +33,11 @@ module.exports.find = async (matched) => {
           );
           
           if (index === 1) {
-            last = nowIndex - lastIndex
+            last = nowIndex / lastIndex
             return true
           }
           
-          return nowIndex - lastIndex === last
+          return nowIndex / lastIndex === last
         });
       });
     });
