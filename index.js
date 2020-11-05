@@ -28,6 +28,7 @@ const filterJapanese = (words) =>
 (async () => {
   while (1) {
     let result = words
+    const resultChain = [result]
 
     console.info('\nstarting new search\n')
 
@@ -44,11 +45,19 @@ const filterJapanese = (words) =>
         }
       ])
 
-      if (!plugin) break
+      if (!plugin) process.exit(0)
 
-      result = await plugin.find(result)
+      const newResult = await plugin.find(result, resultChain)
+      resultChain.push(result)
+      result = newResult
 
-      console.log('current result', filterJapanese(result))
+      const { see } = await prompts({
+        type: () => (result.length > 20 ? 'confirm' : null),
+        initial: () => result.length <= 20,
+        name: 'see',
+        message: () => `you got ${result.length} results. do you want to see the result?`
+      })
+      if (see || result.length <= 20) console.log('current result', filterJapanese(result))
 
       const { keep } = await prompts({
         type: () => (result.length > 1 ? 'confirm' : null),
@@ -56,7 +65,7 @@ const filterJapanese = (words) =>
         message: 'keep reducing?',
         initial: () => result.length > 10
       })
-
+      if (!keep && !see) console.log(filterJapanese(result))
       if (!keep) break
     }
   }
