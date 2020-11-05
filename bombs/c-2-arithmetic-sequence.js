@@ -1,7 +1,7 @@
 const prompts = require("prompts");
 
-module.exports.name = 'increment-sequenced-chars'
-module.exports.description = '连续字符'
+module.exports.name = 'arithmetic sequence'
+module.exports.description = '等差数列'
 module.exports.find = async (matched) => {
   const { sequencedChars } = await prompts([
     {
@@ -19,6 +19,9 @@ module.exports.find = async (matched) => {
       return newMatch.every((match) => {
         const indexes = match.split(",");
         const sequence = "abcdefghijklmnopqrstuvwxyz".split("");
+        
+        let last
+
         return indexes.every((charIndex, index, arr) => {
           if (index === 0) return true;
           const nowIndex = sequence.findIndex(
@@ -27,8 +30,13 @@ module.exports.find = async (matched) => {
           const lastIndex = sequence.findIndex(
             (char) => char === exploded[arr[index - 1] - 1]
           );
-
-          return nowIndex === lastIndex + 1;
+          
+          if (index === 1) {
+            last = nowIndex - lastIndex
+            return true
+          }
+          
+          return nowIndex - lastIndex === last
         });
       });
     });

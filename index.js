@@ -29,7 +29,7 @@ const filterJapanese = (words) =>
   while (1) {
     let result = words;
 
-    console.info('\nstarting new search\n')
+    console.info("\nstarting new search\n");
 
     while (1) {
       const { plugin } = await prompts([
@@ -37,26 +37,27 @@ const filterJapanese = (words) =>
           type: "select",
           name: "plugin",
           message: "reduce using?",
-          choices: plugins
-            .map((plugin) => ({
-              title: `${plugin.name}(${plugin.description || 'no description'})`,
-              value: plugin,
-            })),
+          choices: plugins.map((plugin) => ({
+            title: `${plugin.name}(${plugin.description || "no description"})`,
+            value: plugin,
+          })),
         },
       ]);
 
-      result = await plugin.find(result)
+      result = await plugin.find(result);
 
-      console.log('current result', filterJapanese(result))
+      console.log("current result", filterJapanese(result));
 
-      const { keep } = await prompts({
-        type: "confirm",
-        name: "keep",
-        message: "keep reducing?",
-        initial: words.length > 10,
-      });
-      
-      if (!keep) break
+      const { keep } = await prompts(
+        {
+          type: () => result.length > 1 ? "confirm" : null,
+          name: "keep",
+          message: "keep reducing?",
+          initial: () => result.length > 10
+        },
+      );
+
+      if (!keep) break;
     }
   }
 })();
