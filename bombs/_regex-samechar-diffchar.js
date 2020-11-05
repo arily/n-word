@@ -9,7 +9,7 @@ const pattern2Regex = (pattern) => {
       case '*':
         return '[AEIOUaeiou]'
       default:
-        return ''
+        return char
     }
   })
   return new RegExp(pattern.join('') + '$')
