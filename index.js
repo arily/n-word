@@ -13,7 +13,7 @@ const filterJapanese = (words) =>
   words.reduce(
     (acc, cur) => {
       const first = cur.slice(0, 4)
-      const second = cur.slice(4, 7)
+      const second = cur.slice(4, 8)
 
       if (first === second) acc.filtered.push(cur)
       else acc.normal.push(cur)

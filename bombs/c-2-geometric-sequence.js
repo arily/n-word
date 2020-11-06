@@ -1,5 +1,5 @@
 const prompts = require('prompts')
-const sequence = require('../providers/charSequence')
+const { sequence } = require('../providers/charSequence')
 
 module.exports.name = 'geometric sequence'
 module.exports.description = '字符间等比数列'

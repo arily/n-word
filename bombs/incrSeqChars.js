@@ -1,5 +1,5 @@
 const prompts = require('prompts')
-const sequence = require('../providers/charSequence')
+const { sequence } = require('../providers/charSequence')
 
 module.exports.name = 'increment-sequenced-chars'
 module.exports.description = '连续字符'

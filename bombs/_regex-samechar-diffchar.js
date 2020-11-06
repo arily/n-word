@@ -1,18 +1,39 @@
 const prompts = require('prompts')
-
+const sequence = require('../providers/charSequence')
+const exposeSeq = {
+  ...sequence,
+  circle: sequence.includeShape.circle,
+  arc: sequence.includeShape.arc
+}
+const tagMatch = /<((.)?\w+)>/g
 const pattern2Regex = (pattern) => {
+  const extendTags = pattern.match(tagMatch)
+  const extend = extendTags ? extendTags.map(t => t.slice(1, -1)) : []
+  pattern = pattern.replace(tagMatch, '#')
   pattern = pattern.split('').map((char) => {
     switch (char) {
       case '=':
-        return '[^AEIOUaeiou]'
+        return `[${sequence.consonant.join('')}]`
 
       case '*':
-        return '[AEIOUaeiou]'
+        return `[${sequence.vowel.join('')}]`
+
+      case '#': {
+        const set = extend.shift()
+        if (!set.startsWith('!')) return `[${exposeSeq[set].join('')}]`
+        else return `[^${exposeSeq[set.slice(1)].join('')}]`
+      }
+      case '?':
+        return '[a-z]'
+
       default:
         return char
     }
-  })
-  return new RegExp(pattern.join('') + '$')
+  }, [])
+  return {
+    pattern: new RegExp(pattern.join('') + '$'),
+    length: pattern.length
+  }
 }
 
 module.exports.name = 'regex-samechar-diffchar'
@@ -39,14 +60,14 @@ module.exports.find = async (words) => {
   let matched = words
 
   if (patternStr) {
-    const pattern = pattern2Regex(patternStr)
+    const { pattern, length } = pattern2Regex(patternStr)
     console.log(pattern)
     matched = matched
       .reduce((acc, cur) => {
         if (cur.match(pattern)) acc.push(cur)
         return acc
       }, [])
-      .filter((matched) => matched.length === patternStr.length)
+      .filter((matched) => matched.length === length)
       .map((matched) => matched.toLowerCase())
   }
 
