@@ -5,7 +5,7 @@ const prompts = require('prompts')
 const plugins = glob
   .sync('./bombs/*.js')
   .map((file) => require(path.resolve(file)))
-const words = require('./providers/dict')
+const words = Array.from(require('./providers/dict'))
 
 console.info('😭 we got', words.length, 'words in dict')
 

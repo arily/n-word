@@ -27,7 +27,7 @@ module.exports.find = async (matched) => {
         const newVocabulary = indexes
           .map((index) => exploded[index - 1])
           .join('')
-        return words.find((word) => word === newVocabulary) !== undefined
+        return words.has(newVocabulary)
       })
       searched += newMatch.length
       bar1.update(searched)
